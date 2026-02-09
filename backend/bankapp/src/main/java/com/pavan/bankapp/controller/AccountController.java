@@ -1,6 +1,7 @@
 package com.pavan.bankapp.controller;
 
 import com.pavan.bankapp.dto.AccountDto;
+import com.pavan.bankapp.dto.ConvertDto;
 import com.pavan.bankapp.dto.TransferDto;
 import com.pavan.bankapp.entity.Account;
 import com.pavan.bankapp.entity.Transaction;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/accounts")
@@ -36,5 +38,16 @@ public class AccountController {
     public ResponseEntity<Transaction> transferFunds(@RequestBody TransferDto transferDto, Authentication authentication) throws Exception {
         var user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(accountService.transferFunds(transferDto, user));
+    }
+
+    @GetMapping("/rates")
+    public ResponseEntity<Map<String, Double>> getExchangeRates() {
+        return ResponseEntity.ok(accountService.getExchangeRates());
+    }
+
+    @PostMapping("/convert")
+    public ResponseEntity<Transaction> convertCurrency(@RequestBody ConvertDto convertDto, Authentication authentication) throws Exception {
+        var user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(accountService.convertCurrency(convertDto, user));
     }
 }

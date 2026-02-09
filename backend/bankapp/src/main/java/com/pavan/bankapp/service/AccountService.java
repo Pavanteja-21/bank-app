@@ -1,6 +1,7 @@
 package com.pavan.bankapp.service;
 
 import com.pavan.bankapp.dto.AccountDto;
+import com.pavan.bankapp.dto.ConvertDto;
 import com.pavan.bankapp.dto.TransferDto;
 import com.pavan.bankapp.entity.Account;
 import com.pavan.bankapp.entity.Transaction;
@@ -15,6 +16,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountHelper accountHelper;
+    private final ExchangeRateService exchangeRateService;
 
     public Account createAccount(AccountDto accountDto, User user) throws Exception {
         return accountHelper.createAccount(accountDto, user);
@@ -41,5 +44,14 @@ public class AccountService {
 
         return accountHelper.performTransfer(senderAccount, receiverAccount, transferDto.getAmount(), user);
     }
+
+    public Map<String, Double> getExchangeRates() {
+        return exchangeRateService.getRates();
+    }
+
+    public Transaction convertCurrency(ConvertDto convertDto, User user) throws Exception {
+        return accountHelper.convertCurrency(convertDto, user);
+    }
+
 
 }
