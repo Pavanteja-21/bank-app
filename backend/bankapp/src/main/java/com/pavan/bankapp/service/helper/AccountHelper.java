@@ -63,7 +63,7 @@ public class AccountHelper {
         receiverAccount.setBalance(receiverAccount.getBalance() + amount);
         accountRepository.saveAll(List.of(senderAccount, receiverAccount));
         var senderTransaction = transactionService.createAccountTransaction(amount, Type.WITHDRAW, amount * 0.01, user, senderAccount);
-        var receiverTransaction = transactionService.createAccountTransaction(amount, Type.WITHDRAW, 0.00, receiverAccount.getOwner(), receiverAccount);
+        var receiverTransaction = transactionService.createAccountTransaction(amount, Type.DEPOSIT, 0.00, receiverAccount.getOwner(), receiverAccount);
 
         return senderTransaction;
     }

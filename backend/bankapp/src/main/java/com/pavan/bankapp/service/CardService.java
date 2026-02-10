@@ -9,11 +9,13 @@ import com.pavan.bankapp.service.helper.AccountHelper;
 import com.pavan.bankapp.util.RandomUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CardService {
 
     private final CardRepository cardRepository;
@@ -64,10 +66,22 @@ public class CardService {
     }
 
     public Transaction creditCard(double amount, User user) {
-
+        var usdAccount = accountHelper.findByCodeAndOwnerUid("USD", user.getUid()).orElseThrow();
+        usdAccount.setBalance(usdAccount.getBalance() - amount);
+        transactionService.createAccountTransaction(amount, Type.WITHDRAW, 0.00, user, usdAccount);
+        var card = user.getCard();
+        card.setBalance(card.getBalance() + amount);
+        cardRepository.save(card);
+        return transactionService.createCardTransaction(amount, Type.CREDIT, 0.00, user, card);
     }
 
     public Transaction debitCard(double amount, User user) {
-
+        var usdAccount = accountHelper.findByCodeAndOwnerUid("USD", user.getUid()).orElseThrow();
+        usdAccount.setBalance(usdAccount.getBalance() + amount);
+        transactionService.createAccountTransaction(amount, Type.DEPOSIT, 0.00, user, usdAccount);
+        var card = user.getCard();
+        card.setBalance(card.getBalance() - amount);
+        cardRepository.save(card);
+        return transactionService.createCardTransaction(amount, Type.DEBIT, 0.00, user, card);
     }
 }
