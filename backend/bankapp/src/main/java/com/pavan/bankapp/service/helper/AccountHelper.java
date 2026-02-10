@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.naming.OperationNotSupportedException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -121,4 +122,11 @@ public class AccountHelper {
         return fromAccountTransaction;
     }
 
+    public boolean existsByCodeAndOwnerUid(String code, String uid) {
+        return accountRepository.existsByCodeAndOwnerUid(code, uid);
+    }
+
+    public Optional<Account> findByCodeAndOwnerUid(String code, String uid) {
+        return accountRepository.findByCodeAndOwnerUid(code, uid);
+    }
 }
