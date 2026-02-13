@@ -55,5 +55,12 @@ public class AccountService {
         return accountHelper.convertCurrency(convertDto, user);
     }
 
+    public Account findAccount(String code, Long recipientAccountNumber) {
+        System.out.println("Account Number : " + recipientAccountNumber);
+        System.out.println("Code: " + code);
+        return accountRepository.findByCodeAndAccountNumber(code, recipientAccountNumber).orElseThrow();
+    }
+
+
 
 }

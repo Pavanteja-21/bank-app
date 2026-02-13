@@ -50,4 +50,9 @@ public class AccountController {
         var user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(accountService.convertCurrency(convertDto, user));
     }
+
+    @PostMapping("/find")
+    public ResponseEntity<Account> findAccount(@RequestBody TransferDto dto) {
+        return ResponseEntity.ok(accountService.findAccount(dto.getCode(), dto.getRecipientAccountNumber()));
+    }
 }
