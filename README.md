@@ -1,4 +1,4 @@
-# BankApp - Full Stack Banking Solution
+# Banking Application - Full Stack Banking Solution
 
 A modern, full-stack banking application built with Spring Boot 4, Java 25, and React 19. This application provides a seamless experience for managing multiple currency accounts, performing fund transfers, and real-time currency conversion.
 
